@@ -240,7 +240,6 @@ AURA-FinTech-Risk-Intelligence/
 │   ├── 04_macro_stress_scenario_sensitivity.sql # Dynamic sensitivity grid under GDP/Rate shocks
 │   └── 05_vintage_loss_curve_analysis.sql       # Multi-cohort loan vintage survival curves
 ├── powerbi/
-│   ├── AURA_FinTech_Enterprise_Cockpit.pbix     # Full-featured Power BI Desktop Report
 │   ├── AURA_FinTech_DataModel_Gold_Enterprise.xlsx # Multi-tab Gold dimensional model
 │   ├── AURA_FinTech_Risk.pbip                   # Microsoft Fabric / PBIP developer project
 │   ├── aura_fintech_powerbi_report_schema.json  # 4-page Fabric PBIP report metadata
@@ -290,8 +289,9 @@ print(con.execute(open('sql/01_ifrs9_credit_migration_matrix.sql').read()).df())
 "
 ```
 
-### Step 5: Launch Power BI Desktop
-Double-click `powerbi/AURA_FinTech_Enterprise_Cockpit.pbix` to explore the interactive visual cockpit, or connect Power BI Desktop to `powerbi/AURA_FinTech_DataModel_Gold_Enterprise.xlsx`.
+### Step 5: Open in Power BI Desktop
+Open Power BI Desktop and load `powerbi/AURA_FinTech_DataModel_Gold_Enterprise.xlsx` (or open `powerbi/AURA_FinTech_Risk.pbip`) to explore the Gold analytical marts and apply the DAX measures from `powerbi/dax_enterprise_measure_library.dax`.
+
 
 
 ---
