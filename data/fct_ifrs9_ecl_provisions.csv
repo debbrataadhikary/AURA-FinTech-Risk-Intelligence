@@ -1,0 +1,4 @@
+ifrs9_stage_assigned,total_facilities_count,total_ead_exposure_eur,weighted_avg_pd_pct,weighted_avg_lgd_pct,total_ecl_provision_eur,ecl_coverage_ratio_pct,total_rwa_eur,total_pillar1_capital_eur
+Stage 1 (Performing 12M),8368,140885771.45,2.54,45.01,1427087.91,1.01,100110126.64,8008810.13
+Stage 2 (Significant Risk Surge),1121,18826213.49,14.01,44.64,1038307.76,5.52,18131135.48,1450490.84
+Stage 3 (Credit-Impaired),511,8651272.84,24.39,45.91,841796.66,9.73,12976909.26,1038152.74

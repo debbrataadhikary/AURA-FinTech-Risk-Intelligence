@@ -204,26 +204,56 @@ AURA-FinTech-Risk-Intelligence/
 │   ├── model_roc_curve.png                      # Validation ROC Curve (AUC 0.8142)
 │   └── ifrs9_ecl_stage_breakdown.png            # Staging allocation charts
 ├── data/
-│   ├── aura_fintech.duckdb                      # High-speed analytical DB with Medallion views
+│   ├── aura_fintech.duckdb                      # High-speed analytical DB with Medallion dbt models
 │   ├── fact_credit_portfolio.csv                # 10,000 corporate & retail loan facilities
 │   ├── fact_transactions_stream.csv             # 25,000 payment records with AML features
-│   └── dim_macro_stress_scenarios.csv           # Baseline, Mild, and Severely Adverse shocks
-├── exports/
-│   ├── credit_feature_importance.csv            # Feature ranking and impact coefficients
-│   └── scored_aml_transactions.csv              # Model-scored transactions with outlier scores
+│   ├── dim_macro_stress_scenarios.csv           # Baseline, Mild, and Severely Adverse shocks
+│   ├── fct_ifrs9_ecl_provisions.csv             # dbt Gold: IFRS 9 ECL staged provisions
+│   ├── fct_basel_iii_capital_adequacy.csv       # dbt Gold: Basel III CAR & RWA structure
+│   ├── fct_macro_stress_testing_impact.csv      # dbt Gold: Multi-scenario capital depletion
+│   ├── fct_aml_forensic_watchlist.csv           # dbt Gold: Prioritized AML surveillance list
+│   └── fct_portfolio_country_risk.csv           # dbt Gold: Sovereign credit distribution
+├── dbt_project.yml                              # Enterprise dbt project configuration
+├── profiles.yml                                 # dbt DuckDB adapter connection profile
+├── macros/
+│   ├── calculate_ecl.sql                        # dbt macro: IFRS 9 discounted Expected Credit Loss
+│   └── classify_aml_risk.sql                    # dbt macro: Multi-factor transaction risk rule
 ├── models/
-│   ├── credit_default_gb_model.joblib           # Trained Gradient Boosting Credit Model
-│   └── aml_isolation_forest.joblib              # Unsupervised Isolation Forest Anomaly Model
+│   ├── 1_bronze/                                # Raw Ingestion & Schema Enforcement Layer
+│   │   ├── src_fintech.yml                      # Source declarations & schema integrity tests
+│   │   ├── stg_credit_portfolio.sql             # Staged loan exposures and delinquency
+│   │   ├── stg_transactions_stream.sql          # Staged real-time payment transactions
+│   │   └── stg_macro_scenarios.sql              # Staged Basel III macro stress shocks
+│   ├── 2_silver/                                # Feature Engineering & Cleansed Core
+│   │   ├── int_credit_risk_staging.sql          # SICR triggers, DTI bands, and Basel weights
+│   │   └── int_aml_behavioral_metrics.sql       # Rolling window velocity, Z-scores & smurfing
+│   └── 3_gold/                                  # Executive Dimensional Marts
+│       ├── fct_ifrs9_ecl_provisions.sql         # Stage 1-3 ECL allowances & coverage
+│       ├── fct_basel_iii_capital_adequacy.sql   # CAR 14.50%, Tier 1 capital & buffer surplus
+│       ├── fct_macro_stress_testing_impact.sql  # Macro stress depletion (Severely Adverse)
+│       ├── fct_aml_forensic_watchlist.sql       # Forensic AML suspect accounts & SAR filing
+│       └── fct_portfolio_country_risk.sql       # European sovereign market credit concentration
+├── sql/                                         # Advanced SQL Analytics Suite
+│   ├── 01_ifrs9_credit_migration_matrix.sql     # Multi-period Markov rating transition matrix
+│   ├── 02_aml_transaction_structuring_detector.sql # Rolling lag/lead smurfing threshold detector
+│   ├── 03_basel_iii_pillar1_capital_optimization.sql # Standardized vs IRB capital relief model
+│   ├── 04_macro_stress_scenario_sensitivity.sql # Dynamic sensitivity grid under GDP/Rate shocks
+│   └── 05_vintage_loss_curve_analysis.sql       # Multi-cohort loan vintage survival curves
 ├── powerbi/
+│   ├── AURA_FinTech_Enterprise_Cockpit.pbix     # Full-featured Power BI Desktop Report
+│   ├── AURA_FinTech_DataModel_Gold_Enterprise.xlsx # Multi-tab Gold dimensional model
+│   ├── AURA_FinTech_Risk.pbip                   # Microsoft Fabric / PBIP developer project
 │   ├── aura_fintech_powerbi_report_schema.json  # 4-page Fabric PBIP report metadata
 │   └── dax_enterprise_measure_library.dax       # 18 production DAX risk calculations
-├── generate_fintech_dataset.py                  # Reproducible FinTech data synthesis engine
+├── models/                                      # ML Trained Weights & Pipelines
+│   ├── credit_default_gb_model.joblib           # Gradient Boosting Classifier (ROC-AUC 0.8142)
+│   └── aml_isolation_forest.joblib              # Unsupervised Isolation Forest Anomaly Model
+├── generate_fintech_dataset.py                  # Synthetic data generator engine
 ├── train_risk_models.py                         # ML training, validation, and chart generation
-├── generate_powerbi_dashboard_preview.py        # High-res boardroom visual render script
-├── requirements.txt                             # Production Python environment dependencies
+├── requirements.txt                             # Python dependencies (dbt, duckdb, sklearn)
 ├── .gitignore                                   # Standard repo ignore rules
 ├── LICENSE                                      # MIT Open Source License
-└── README.md                                    # Architectural whitepaper and documentation
+└── README.md                                    # Comprehensive whitepaper & documentation
 ```
 
 ---
@@ -236,36 +266,33 @@ git clone https://github.com/debbrataadhikary/AURA-FinTech-Risk-Intelligence.git
 cd AURA-FinTech-Risk-Intelligence
 ```
 
-### Step 2: Set Up Virtual Environment & Dependencies
+### Step 2: Set Up Environment & Install Dependencies
 ```bash
 python -m venv venv
-# On Windows:
-venv\Scripts\activate
-# On Linux/macOS:
-source venv/bin/activate
-
+venv\Scripts\activate       # On Linux/macOS: source venv/bin/activate
 pip install -r requirements.txt
+pip install dbt-duckdb
 ```
 
-### Step 3: Run Data Generation & DuckDB Ingestion
+### Step 3: Run the Complete dbt Medallion Pipeline
 ```bash
-python generate_fintech_dataset.py
+dbt run --profiles-dir .
+dbt test --profiles-dir .
 ```
-*Outputs `data/fact_credit_portfolio.csv`, `data/fact_transactions_stream.csv`, and initializes `data/aura_fintech.duckdb` with Medallion Gold aggregated views.*
+*Executes all 10 Bronze, Silver, and Gold SQL models and validates 4 data tests in < 1 second.*
 
-### Step 4: Train Credit Models & AML Anomaly Pipeline
+### Step 4: Run Advanced SQL Analytics
 ```bash
-python train_risk_models.py
-```
-*Computes ROC-AUC, KS statistic, saves model artifacts to `models/`, and generates evaluation graphics in `assets/`.*
-
-### Step 5: Explore DuckDB via SQL
-```python
+python -c "
 import duckdb
-
-con = duckdb.connect("data/aura_fintech.duckdb", read_only=True)
-print(con.execute("SELECT * FROM gold_ifrs9_stage_summary").df())
+con = duckdb.connect('data/aura_fintech.duckdb', read_only=True)
+print(con.execute(open('sql/01_ifrs9_credit_migration_matrix.sql').read()).df())
+"
 ```
+
+### Step 5: Launch Power BI Desktop
+Double-click `powerbi/AURA_FinTech_Enterprise_Cockpit.pbix` to explore the interactive visual cockpit, or connect Power BI Desktop to `powerbi/AURA_FinTech_DataModel_Gold_Enterprise.xlsx`.
+
 
 ---
 

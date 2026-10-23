@@ -1,0 +1,25 @@
+name: 'aura_fintech_risk'
+version: '2.0.0'
+config-version: 2
+
+profile: 'aura_fintech_duckdb'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  aura_fintech_risk:
+    1_bronze:
+      +materialized: view
+    2_silver:
+      +materialized: table
+    3_gold:
+      +materialized: table

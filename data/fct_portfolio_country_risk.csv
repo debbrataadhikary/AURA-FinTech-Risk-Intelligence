@@ -1,0 +1,6 @@
+sovereign_market,total_active_loans,total_ead_eur,avg_fico_credit_score,avg_dti_ratio_pct,avg_default_probability_pct,total_ecl_eur,impairment_density_pct,npl_non_performing_loans_eur,npl_ratio_pct
+Lithuania,3496,58391295.08,679.0,24.55,4.71,1142862.47,1.96,518891.62,0.89
+Germany,2520,42108151.35,680.0,24.52,4.86,777899.48,1.85,255456.13,0.61
+Netherlands,1505,26540213.27,679.0,24.5,5.5,544327.41,2.05,220392.13,0.83
+Estonia,1487,25897542.69,681.0,24.56,5.1,535804.24,2.07,371271.24,1.43
+Latvia,992,15426055.39,674.0,23.95,4.86,306298.73,1.99,87034.19,0.56

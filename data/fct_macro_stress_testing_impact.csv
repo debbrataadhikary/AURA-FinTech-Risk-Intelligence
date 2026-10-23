@@ -1,0 +1,4 @@
+scenario_name,gdp_growth_pct,inflation_hicp_pct,central_bank_rate_pct,unemployment_pct,ecl_stress_multiplier,total_portfolio_ead_eur,baseline_rwa_eur,baseline_tier1_eur,baseline_car_pct,stressed_ecl_provision_eur,stressed_tier1_capital_eur,stressed_rwa_eur,stressed_car_ratio_pct,solvency_depletion_bps
+BASELINE (ECB PROJECTIONS),1.4,2.2,3.25,6.4,1.0,168363257.78,131218171.39,19026634.85,17.0,4986290.51,19026634.85,131218171.39,14.5,250.0
+STAGNATION (ADVERSE STAGFLATION),-0.4,4.8,4.5,8.2,1.45,168363257.78,131218171.39,19026634.85,17.0,7230121.24,16782804.12,140075397.96,11.98,502.0
+SEVERE RECESSION (GLOBAL LIQUIDITY SHOCK),-2.8,6.5,5.25,11.0,2.15,168363257.78,131218171.39,19026634.85,17.0,10720524.6,13292400.76,153853305.95,8.64,836.0

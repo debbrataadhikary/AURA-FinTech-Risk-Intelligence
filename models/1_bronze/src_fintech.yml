@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: aura_raw
+    schema: main
+    tables:
+      - name: fact_credit_portfolio
+        description: "Raw credit portfolio loan records with exposures, credit scores, and delinquency history"
+        columns:
+          - name: loan_id
+            tests:
+              - unique
+              - not_null
+      - name: fact_transactions_stream
+        description: "Raw transactional payment event stream with AML behavioral indicators"
+        columns:
+          - name: transaction_id
+            tests:
+              - unique
+              - not_null
+      - name: dim_macro_stress_scenarios
+        description: "EBA / Basel III macroeconomic stress testing shock parameters"

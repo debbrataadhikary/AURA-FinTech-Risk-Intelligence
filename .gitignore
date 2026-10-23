@@ -25,3 +25,9 @@ venv.bak/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# dbt artifacts
+target/
+dbt_packages/
+logs/
+.user.yml

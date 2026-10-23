@@ -1,0 +1,7 @@
+aura_fintech_duckdb:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: 'data/aura_fintech.duckdb'
+      threads: 4
