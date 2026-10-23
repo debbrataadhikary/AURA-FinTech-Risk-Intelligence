@@ -1,0 +1,157 @@
+table Fact_Credit_Portfolio
+	lineageTag: 5be31a46-b17b-437f-85c7-bbec180ea2af
+
+	column Loan_ID
+		dataType: string
+		lineageTag: 0ed84613-e10c-41eb-b380-b06faf73996f
+		sourceColumn: Loan_ID
+
+	column Customer_ID
+		dataType: string
+		lineageTag: acf62202-59b0-491b-ade4-3b8a3b92c1ad
+		sourceColumn: Customer_ID
+
+	column Age
+		dataType: string
+		lineageTag: 5e931219-2f80-4b10-bc7f-8bba7c030119
+		summarizeBy: none
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column Annual_Income_EUR
+		dataType: string
+		lineageTag: 5b816731-d746-4480-b3d8-382a04558034
+		summarizeBy: none
+		sourceColumn: Annual_Income_EUR
+
+		annotation SummarizationSetBy = Automatic
+
+	column FICO_Score
+		dataType: string
+		lineageTag: 65435e45-e2fc-4507-a14a-6646637a193e
+		summarizeBy: none
+		sourceColumn: FICO_Score
+
+		annotation SummarizationSetBy = Automatic
+
+	column Debt_to_Income_DTI
+		dataType: string
+		lineageTag: f910d6ce-829c-46bf-b2d7-a7eafcb9fa57
+		summarizeBy: none
+		sourceColumn: Debt_to_Income_DTI
+
+		annotation SummarizationSetBy = Automatic
+
+	column Employment_Length_Years
+		dataType: string
+		lineageTag: 13af849d-2190-4069-b36a-9f226262e178
+		summarizeBy: none
+		sourceColumn: Employment_Length_Years
+
+		annotation SummarizationSetBy = Automatic
+
+	column Loan_Amount_EUR
+		dataType: string
+		lineageTag: 15dc3ccc-0407-4686-888a-a21290e037ab
+		summarizeBy: none
+		sourceColumn: Loan_Amount_EUR
+
+		annotation SummarizationSetBy = Automatic
+
+	column Loan_Purpose
+		dataType: string
+		lineageTag: 5882d0fa-ee1e-4814-bae7-b3afe218676a
+		sourceColumn: Loan_Purpose
+
+	column Term_Months
+		dataType: string
+		lineageTag: fbfab450-68a3-4ca2-a3c9-426e5c532eb0
+		summarizeBy: none
+		sourceColumn: Term_Months
+
+		annotation SummarizationSetBy = Automatic
+
+	column Interest_Rate_Pct
+		dataType: string
+		lineageTag: 95ffc041-6f8c-4820-aaba-2c51f18e7136
+		summarizeBy: none
+		sourceColumn: Interest_Rate_Pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column Days_Past_Due_DPD
+		dataType: string
+		lineageTag: 1dc1082c-be90-4dc2-b79b-a4127e330837
+		summarizeBy: none
+		sourceColumn: Days_Past_Due_DPD
+
+		annotation SummarizationSetBy = Automatic
+
+	column IFRS9_Stage
+		dataType: string
+		lineageTag: 79be4dcc-56c9-4b6e-9380-b79e6db9df23
+		sourceColumn: IFRS9_Stage
+
+	column EAD_Exposure_EUR
+		dataType: string
+		lineageTag: 6f021603-deec-40ae-90fd-1a6196f63ade
+		summarizeBy: none
+		sourceColumn: EAD_Exposure_EUR
+
+		annotation SummarizationSetBy = Automatic
+
+	column LGD_Loss_Given_Default
+		dataType: string
+		lineageTag: d4594f49-8ac8-4a33-8f8f-e2b6a8391159
+		summarizeBy: none
+		sourceColumn: LGD_Loss_Given_Default
+
+		annotation SummarizationSetBy = Automatic
+
+	column PD_Probability_of_Default
+		dataType: string
+		lineageTag: 5a92eac5-a6f1-4dbe-8a2b-094bec069a99
+		summarizeBy: none
+		sourceColumn: PD_Probability_of_Default
+
+		annotation SummarizationSetBy = Automatic
+
+	column ECL_Expected_Loss_EUR
+		dataType: string
+		lineageTag: 1c55d3e1-3193-499a-8b5e-49a840d09d82
+		summarizeBy: none
+		sourceColumn: ECL_Expected_Loss_EUR
+
+		annotation SummarizationSetBy = Automatic
+
+	column Default_12M_Target
+		dataType: string
+		lineageTag: 29f19652-f44e-46db-8621-d36b21e15e99
+		summarizeBy: none
+		sourceColumn: Default_12M_Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column Origination_Date
+		dataType: string
+		lineageTag: f035bc25-3446-4a33-9b51-922706e5a80b
+		summarizeBy: none
+		sourceColumn: Origination_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: de4570e3-a06f-4940-8232-e6a220528406
+		sourceColumn: Country
+
+	partition Fact_Credit_Portfolio-Partition = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("d:\\DW- Internship\\AURA-FinTech-Risk-Intelligence\\data\\fact_credit_portfolio.csv"),[Delimiter=",", Columns=20, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+				in
+				    #"Promoted Headers"
+

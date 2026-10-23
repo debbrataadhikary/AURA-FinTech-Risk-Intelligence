@@ -1,0 +1,57 @@
+table Dim_Macro_Stress
+	lineageTag: f2a5dcaa-42df-4f35-91e4-396ce735c570
+
+	column Scenario
+		dataType: string
+		lineageTag: dbcf23cb-c3f2-4159-b14d-be07c2a51028
+		sourceColumn: Scenario
+
+	column GDP_Growth_Pct
+		dataType: string
+		lineageTag: 9157963e-fd5e-45a8-8bdd-aead92c8a49b
+		summarizeBy: none
+		sourceColumn: GDP_Growth_Pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column Inflation_HICP_Pct
+		dataType: string
+		lineageTag: df303b07-1a63-4a0b-bf4f-2cb6afe837a7
+		summarizeBy: none
+		sourceColumn: Inflation_HICP_Pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column Central_Bank_Rate_Pct
+		dataType: string
+		lineageTag: 8d7cfaf2-d456-4a18-963c-a8ea3652bc67
+		summarizeBy: none
+		sourceColumn: Central_Bank_Rate_Pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column Unemployment_Pct
+		dataType: string
+		lineageTag: 412ff6ab-c999-47e1-bdc4-1c72b7e8b434
+		summarizeBy: none
+		sourceColumn: Unemployment_Pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column ECL_Stress_Multiplier
+		dataType: string
+		lineageTag: 37777784-ec0c-44c7-9d43-6d07815ac98a
+		summarizeBy: none
+		sourceColumn: ECL_Stress_Multiplier
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Macro_Stress-Partition = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("d:\\DW- Internship\\AURA-FinTech-Risk-Intelligence\\data\\dim_macro_stress_scenarios.csv"),[Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+				in
+				    #"Promoted Headers"
+

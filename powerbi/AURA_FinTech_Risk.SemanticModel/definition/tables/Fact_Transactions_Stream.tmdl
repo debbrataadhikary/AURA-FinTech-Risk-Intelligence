@@ -1,0 +1,75 @@
+table Fact_Transactions_Stream
+	lineageTag: 05816202-9474-4c5e-ab6d-11f898c84f91
+
+	column Transaction_ID
+		dataType: string
+		lineageTag: 2b90eddc-7de4-4cef-a55a-755ce2edb0ee
+		sourceColumn: Transaction_ID
+
+	column Customer_ID
+		dataType: string
+		lineageTag: 75660234-e7be-4204-8508-1a657daad6cd
+		sourceColumn: Customer_ID
+
+	column Channel
+		dataType: string
+		lineageTag: 1c1372a5-61fe-412a-bb10-58ef7b8aaca2
+		sourceColumn: Channel
+
+	column Amount_EUR
+		dataType: string
+		lineageTag: bf5667f6-4bd9-49a6-81ff-f9d1a07448ce
+		summarizeBy: none
+		sourceColumn: Amount_EUR
+
+		annotation SummarizationSetBy = Automatic
+
+	column Is_Foreign_Counterparty
+		dataType: string
+		lineageTag: 718bf488-a435-49fd-a54b-ba690d7c8c40
+		summarizeBy: none
+		sourceColumn: Is_Foreign_Counterparty
+
+		annotation SummarizationSetBy = Automatic
+
+	column Is_High_Risk_Jurisdiction
+		dataType: string
+		lineageTag: 17c6daae-23c2-446f-b6a9-4fc70d9c27e9
+		summarizeBy: none
+		sourceColumn: Is_High_Risk_Jurisdiction
+
+		annotation SummarizationSetBy = Automatic
+
+	column Hourly_Velocity_Count
+		dataType: string
+		lineageTag: afd990a7-3729-47ad-a70c-75ffd57545ef
+		summarizeBy: none
+		sourceColumn: Hourly_Velocity_Count
+
+		annotation SummarizationSetBy = Automatic
+
+	column AML_Suspicious_Flag
+		dataType: string
+		lineageTag: 9ec0e01b-f64f-42e2-986e-833bd78fd6b0
+		summarizeBy: none
+		sourceColumn: AML_Suspicious_Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timestamp
+		dataType: string
+		lineageTag: 98136851-6dfc-47e3-ab00-49911f3c3e72
+		summarizeBy: none
+		sourceColumn: Timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Transactions_Stream-Partition = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("d:\\DW- Internship\\AURA-FinTech-Risk-Intelligence\\data\\fact_transactions_stream.csv"),[Delimiter=",", Columns=9, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+				in
+				    #"Promoted Headers"
+

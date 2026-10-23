@@ -1,0 +1,209 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "v3amlTable",
+  "position": {
+    "x": 12,
+    "y": 386,
+    "z": 2000,
+    "height": 320,
+    "width": 1256,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_Transactions_Stream"
+                    }
+                  },
+                  "Property": "Transaction_ID"
+                }
+              },
+              "queryRef": "Fact_Transactions_Stream.Transaction_ID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_Transactions_Stream"
+                    }
+                  },
+                  "Property": "Customer_ID"
+                }
+              },
+              "queryRef": "Fact_Transactions_Stream.Customer_ID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_Transactions_Stream"
+                    }
+                  },
+                  "Property": "Channel"
+                }
+              },
+              "queryRef": "Fact_Transactions_Stream.Channel"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_Transactions_Stream"
+                    }
+                  },
+                  "Property": "Amount_EUR"
+                }
+              },
+              "queryRef": "Fact_Transactions_Stream.Amount_EUR"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_Transactions_Stream"
+                    }
+                  },
+                  "Property": "Is_High_Risk_Jurisdiction"
+                }
+              },
+              "queryRef": "Fact_Transactions_Stream.Is_High_Risk_Jurisdiction"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_Transactions_Stream"
+                    }
+                  },
+                  "Property": "Hourly_Velocity_Count"
+                }
+              },
+              "queryRef": "Fact_Transactions_Stream.Hourly_Velocity_Count"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_Transactions_Stream"
+                    }
+                  },
+                  "Property": "AML_Suspicious_Flag"
+                }
+              },
+              "queryRef": "Fact_Transactions_Stream.AML_Suspicious_Flag"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#102A43'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#334E68'"
+                    }
+                  }
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Real-Time AML High-Velocity Surveillance Audit Trail'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
