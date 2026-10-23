@@ -1,0 +1,4 @@
+Scenario,GDP_Growth_Pct,Inflation_HICP_Pct,Central_Bank_Rate_Pct,Unemployment_Pct,ECL_Stress_Multiplier
+Baseline (ECB Projections),1.4,2.2,3.25,6.4,1.0
+Stagnation (Adverse Stagflation),-0.4,4.8,4.5,8.2,1.45
+Severe Recession (Global Liquidity Shock),-2.8,6.5,5.25,11.0,2.15

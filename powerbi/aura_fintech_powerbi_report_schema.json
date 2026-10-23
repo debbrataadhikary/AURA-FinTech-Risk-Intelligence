@@ -1,0 +1,110 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/reportJson/1.0.0/schema.json",
+  "name": "AURA_FinTech_Enterprise_Risk_Intelligence",
+  "theme": "Executive_Fintech_DarkSlate",
+  "version": "1.0",
+  "dataModelSchema": {
+    "tables": [
+      {
+        "name": "Fact_Credit_Portfolio",
+        "description": "IFRS 9 Loan-level exposures, credit scores, delinquency, and expected loss parameters",
+        "columns": [
+          {"name": "Loan_ID", "dataType": "string", "isKey": true},
+          {"name": "Customer_ID", "dataType": "string"},
+          {"name": "FICO_Score", "dataType": "int64"},
+          {"name": "Debt_to_Income_DTI", "dataType": "double"},
+          {"name": "Annual_Income_EUR", "dataType": "double"},
+          {"name": "Loan_Amount_EUR", "dataType": "double"},
+          {"name": "Days_Past_Due_DPD", "dataType": "int64"},
+          {"name": "IFRS9_Stage", "dataType": "string"},
+          {"name": "EAD_Exposure_EUR", "dataType": "double"},
+          {"name": "LGD_Loss_Given_Default", "dataType": "double"},
+          {"name": "PD_Probability_of_Default", "dataType": "double"},
+          {"name": "ECL_Expected_Loss_EUR", "dataType": "double"},
+          {"name": "Default_12M_Target", "dataType": "int64"},
+          {"name": "Country", "dataType": "string"},
+          {"name": "Origination_Date", "dataType": "dateTime"}
+        ]
+      },
+      {
+        "name": "Fact_Transactions_Stream",
+        "description": "Real-time payment transactions across SEPA, SWIFT, Card with AML velocity scoring",
+        "columns": [
+          {"name": "Transaction_ID", "dataType": "string", "isKey": true},
+          {"name": "Customer_ID", "dataType": "string"},
+          {"name": "Channel", "dataType": "string"},
+          {"name": "Amount_EUR", "dataType": "double"},
+          {"name": "Is_Foreign_Counterparty", "dataType": "int64"},
+          {"name": "Is_High_Risk_Jurisdiction", "dataType": "int64"},
+          {"name": "Hourly_Velocity_Count", "dataType": "int64"},
+          {"name": "AML_Suspicious_Flag", "dataType": "int64"},
+          {"name": "Timestamp", "dataType": "dateTime"}
+        ]
+      },
+      {
+        "name": "Dim_Macro_Stress_Scenarios",
+        "description": "Basel III / EBA Stress-testing macro shocks (Baseline, Stagnation, Severe Recession)",
+        "columns": [
+          {"name": "Scenario", "dataType": "string", "isKey": true},
+          {"name": "GDP_Growth_Pct", "dataType": "double"},
+          {"name": "Inflation_HICP_Pct", "dataType": "double"},
+          {"name": "Central_Bank_Rate_Pct", "dataType": "double"},
+          {"name": "Unemployment_Pct", "dataType": "double"},
+          {"name": "ECL_Stress_Multiplier", "dataType": "double"}
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "fromTable": "Fact_Transactions_Stream",
+        "fromColumn": "Customer_ID",
+        "toTable": "Fact_Credit_Portfolio",
+        "toColumn": "Customer_ID",
+        "crossFilteringBehavior": "bothDirections"
+      }
+    ]
+  },
+  "pages": [
+    {
+      "name": "Page1_Executive_Boardroom_Cockpit",
+      "displayName": "Executive Solvency & Solvency Cockpit",
+      "visuals": [
+        {"title": "Total Credit Exposure (EAD)", "type": "card", "measure": "[Total_EAD_EUR]"},
+        {"title": "Expected Credit Loss (ECL)", "type": "card", "measure": "[Total_ECL_EUR]"},
+        {"title": "Capital Adequacy Ratio (CAR)", "type": "gauge", "measure": "[Capital_Adequacy_Ratio]", "target": 0.145, "minimum": 0.08},
+        {"title": "ECL Coverage Ratio", "type": "card", "measure": "[ECL_Coverage_Ratio]"},
+        {"title": "IFRS 9 Exposure by Stage & Country", "type": "stackedColumnChart", "category": "Country", "series": "IFRS9_Stage", "values": "[Total_EAD_EUR]"},
+        {"title": "EAD vs Risk Density Bubble Matrix", "type": "scatterPlot", "x": "[Portfolio_Avg_PD]", "y": "[Portfolio_Avg_LGD]", "size": "[Total_EAD_EUR]"}
+      ]
+    },
+    {
+      "name": "Page2_IFRS9_Stage_Migration_and_ECL",
+      "displayName": "IFRS 9 Stage Migration & Provisioning",
+      "visuals": [
+        {"title": "Stage 1 -> Stage 2 -> Stage 3 Transition Flow", "type": "sankeyDiagram", "source": "Origination_Stage", "destination": "Current_Stage", "value": "[Total_EAD_EUR]"},
+        {"title": "Loan Term vs Delinquency Vintage Curves", "type": "lineChart", "axis": "Term_Months", "values": ["[Default_Rate_Actual]", "[Portfolio_Avg_PD]"]},
+        {"title": "Days Past Due (DPD) vs FICO Risk Heatmap", "type": "matrix", "rows": "Days_Past_Due_DPD", "columns": "FICO_Score_Bin", "values": "[Total_ECL_EUR]"}
+      ]
+    },
+    {
+      "name": "Page3_Basel_III_Macro_Stress_Testing",
+      "displayName": "Basel III / EBA Macro Stress-Testing",
+      "visuals": [
+        {"title": "Macroeconomic Scenario Selector", "type": "slicer", "field": "Dim_Macro_Stress_Scenarios[Scenario]"},
+        {"title": "Stressed Expected Credit Loss (€M)", "type": "card", "measure": "[Stressed_ECL_EUR]"},
+        {"title": "Capital Depletion Impact (€M)", "type": "card", "measure": "[Capital_Depletion_Under_Stress]"},
+        {"title": "Stressed Capital Adequacy Ratio (CAR %)", "type": "gauge", "measure": "[Stressed_CAR_Pct]", "regulatoryMinimum": 0.08},
+        {"title": "Severe Recession Shock Impact on Regulatory Capital Waterfall", "type": "waterfallChart", "category": "Capital_Component", "values": "Amount_EUR"}
+      ]
+    },
+    {
+      "name": "Page4_RealTime_AML_and_Fraud_Surveillance",
+      "displayName": "Real-Time AML & Mule Fraud Surveillance",
+      "visuals": [
+        {"title": "24H Transaction Velocity vs Anomaly Score", "type": "scatterPlot", "x": "Hourly_Velocity_Count", "y": "Amount_EUR", "color": "AML_Suspicious_Flag"},
+        {"title": "Cross-Border High-Risk Flow Map", "type": "map", "location": "Country", "size": "[Flagged_AML_Volume_EUR]"},
+        {"title": "Flagged High-Risk PEP & Suspicious Mule Queue", "type": "table", "columns": ["Transaction_ID", "Customer_ID", "Channel", "Amount_EUR", "Timestamp", "AML_Suspicious_Flag"]}
+      ]
+    }
+  ]
+}

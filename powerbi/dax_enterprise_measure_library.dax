@@ -1,0 +1,132 @@
+// ==============================================================================
+// AURA-FinTech: Senior Power BI Enterprise DAX Measure Suite
+// Kimball Star-Schema Data Model Architecture
+// ==============================================================================
+
+// ------------------------------------------------------------------------------
+// TABLE: _Measures_Portfolio_KPIs (Core Volume & Exposure Metrics)
+// ------------------------------------------------------------------------------
+
+Total_Loans = COUNTROWS('Fact_Credit_Portfolio')
+
+Total_EAD_EUR = SUM('Fact_Credit_Portfolio'[EAD_Exposure_EUR])
+
+Total_ECL_EUR = SUM('Fact_Credit_Portfolio'[ECL_Expected_Loss_EUR])
+
+ECL_Coverage_Ratio = 
+DIVIDE(
+    [Total_ECL_EUR],
+    [Total_EAD_EUR],
+    0
+)
+
+Portfolio_Avg_PD = 
+AVERAGE('Fact_Credit_Portfolio'[PD_Probability_of_Default])
+
+Portfolio_Avg_LGD = 
+AVERAGE('Fact_Credit_Portfolio'[LGD_Loss_Given_Default])
+
+Default_Rate_Actual = 
+DIVIDE(
+    CALCULATE(COUNTROWS('Fact_Credit_Portfolio'), 'Fact_Credit_Portfolio'[Default_12M_Target] = 1),
+    [Total_Loans],
+    0
+)
+
+
+// ------------------------------------------------------------------------------
+// TABLE: _Measures_IFRS9_Stages (IFRS 9 Regulatory Impairment Allocation)
+// ------------------------------------------------------------------------------
+
+Stage1_Exposure_EUR = 
+CALCULATE(
+    [Total_EAD_EUR],
+    'Fact_Credit_Portfolio'[IFRS9_Stage] = "Stage 1 (Performing)"
+)
+
+Stage2_Exposure_EUR = 
+CALCULATE(
+    [Total_EAD_EUR],
+    'Fact_Credit_Portfolio'[IFRS9_Stage] = "Stage 2 (SICR - Underperforming)"
+)
+
+Stage3_Exposure_EUR = 
+CALCULATE(
+    [Total_EAD_EUR],
+    'Fact_Credit_Portfolio'[IFRS9_Stage] = "Stage 3 (Default - Credit Impaired)"
+)
+
+Stage2_Exposure_Share = 
+DIVIDE([Stage2_Exposure_EUR], [Total_EAD_EUR], 0)
+
+Stage3_NPL_Ratio = 
+DIVIDE([Stage3_Exposure_EUR], [Total_EAD_EUR], 0)
+
+
+// ------------------------------------------------------------------------------
+// TABLE: _Measures_Basel_Capital (Regulatory Capital & Solvency)
+// ------------------------------------------------------------------------------
+
+// Risk-Weighted Assets (RWA) under Basel III Standardized Approach
+Total_RWA_EUR = 
+SUMX(
+    'Fact_Credit_Portfolio',
+    'Fact_Credit_Portfolio'[EAD_Exposure_EUR] * 
+    SWITCH(
+        'Fact_Credit_Portfolio'[IFRS9_Stage],
+        "Stage 1 (Performing)", 0.75,
+        "Stage 2 (SICR - Underperforming)", 1.00,
+        "Stage 3 (Default - Credit Impaired)", 1.50,
+        0.75
+    )
+)
+
+// Regulatory Tier 1 Capital (Synthetic Benchmark: 14.5% of Base RWA)
+Tier1_Capital_EUR = [Total_RWA_EUR] * 0.145
+
+// Capital Adequacy Ratio (CAR) - Basel III Minimum is 8.0%, Target is 10.5%
+Capital_Adequacy_Ratio = 
+DIVIDE([Tier1_Capital_EUR], [Total_RWA_EUR], 0)
+
+
+// ------------------------------------------------------------------------------
+// TABLE: _Measures_WhatIf_Macro_Stress (Dynamic Macroeconomic Scenarios)
+// ------------------------------------------------------------------------------
+
+// Connected to 'Dim_Macro_Stress_Scenarios'[Scenario] Slicer
+Stressed_ECL_EUR = 
+VAR SelectedMultiplier = SELECTEDVALUE('Dim_Macro_Stress_Scenarios'[ECL_Stress_Multiplier], 1.00)
+RETURN
+    [Total_ECL_EUR] * SelectedMultiplier
+
+Capital_Depletion_Under_Stress = 
+[Stressed_ECL_EUR] - [Total_ECL_EUR]
+
+Stressed_CAR_Pct = 
+VAR DepletedTier1 = [Tier1_Capital_EUR] - [Capital_Depletion_Under_Stress]
+RETURN
+    DIVIDE(DepletedTier1, [Total_RWA_EUR], 0)
+
+
+// ------------------------------------------------------------------------------
+// TABLE: _Measures_AML_Surveillance (Real-Time Transaction Intelligence)
+// ------------------------------------------------------------------------------
+
+Total_Transactions = COUNTROWS('Fact_Transactions_Stream')
+
+Total_Transaction_Volume_EUR = SUM('Fact_Transactions_Stream'[Amount_EUR])
+
+Flagged_AML_Count = 
+CALCULATE(
+    COUNTROWS('Fact_Transactions_Stream'),
+    'Fact_Transactions_Stream'[AML_Suspicious_Flag] = 1
+)
+
+Flagged_AML_Rate = 
+DIVIDE([Flagged_AML_Count], [Total_Transactions], 0)
+
+Flagged_AML_Volume_EUR = 
+CALCULATE(
+    [Total_Transaction_Volume_EUR],
+    'Fact_Transactions_Stream'[AML_Suspicious_Flag] = 1
+)
