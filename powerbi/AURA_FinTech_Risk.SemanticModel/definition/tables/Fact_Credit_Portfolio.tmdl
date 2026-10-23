@@ -24,6 +24,7 @@ table Fact_Credit_Portfolio
 		lineageTag: 5b816731-d746-4480-b3d8-382a04558034
 		summarizeBy: sum
 		sourceColumn: Annual_Income_EUR
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column FICO_Score
@@ -37,6 +38,7 @@ table Fact_Credit_Portfolio
 		lineageTag: f910d6ce-829c-46bf-b2d7-a7eafcb9fa57
 		summarizeBy: average
 		sourceColumn: Debt_to_Income_DTI
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Employment_Length_Years
@@ -50,6 +52,7 @@ table Fact_Credit_Portfolio
 		lineageTag: 15dc3ccc-0407-4686-888a-a21290e037ab
 		summarizeBy: sum
 		sourceColumn: Loan_Amount_EUR
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Loan_Purpose
@@ -69,6 +72,7 @@ table Fact_Credit_Portfolio
 		lineageTag: f4c3f59e-14f7-41a4-9ecb-e7b398dfaa04
 		summarizeBy: average
 		sourceColumn: Interest_Rate_Pct
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Days_Past_Due_DPD
@@ -88,6 +92,7 @@ table Fact_Credit_Portfolio
 		lineageTag: 8eb512c0-7cf1-4ec4-9df2-5ec24b330364
 		summarizeBy: sum
 		sourceColumn: EAD_Exposure_EUR
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column LGD_Loss_Given_Default
@@ -95,6 +100,7 @@ table Fact_Credit_Portfolio
 		lineageTag: a0391d4e-b73a-4ef3-be5b-86ba6bf4f620
 		summarizeBy: average
 		sourceColumn: LGD_Loss_Given_Default
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column PD_Probability_of_Default
@@ -102,6 +108,7 @@ table Fact_Credit_Portfolio
 		lineageTag: 489437ff-99d9-4fa2-bcda-3adfb3763f35
 		summarizeBy: average
 		sourceColumn: PD_Probability_of_Default
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column ECL_Expected_Loss_EUR
@@ -109,6 +116,7 @@ table Fact_Credit_Portfolio
 		lineageTag: 1c55d3e1-3193-499a-8b5e-49a840d09d82
 		summarizeBy: sum
 		sourceColumn: ECL_Expected_Loss_EUR
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Default_12M_Target
@@ -139,3 +147,4 @@ table Fact_Credit_Portfolio
 				    ChangedType = Table.TransformColumnTypes(PromotedHeaders,{{"Loan_ID", type text}, {"Customer_ID", type text}, {"Age", Int64.Type}, {"Annual_Income_EUR", type number}, {"FICO_Score", Int64.Type}, {"Debt_to_Income_DTI", type number}, {"Employment_Length_Years", Int64.Type}, {"Loan_Amount_EUR", type number}, {"Loan_Purpose", type text}, {"Term_Months", Int64.Type}, {"Interest_Rate_Pct", type number}, {"Days_Past_Due_DPD", Int64.Type}, {"IFRS9_Stage", type text}, {"EAD_Exposure_EUR", type number}, {"LGD_Loss_Given_Default", type number}, {"PD_Probability_of_Default", type number}, {"ECL_Expected_Loss_EUR", type number}, {"Default_12M_Target", Int64.Type}, {"Origination_Date", type datetime}, {"Country", type text}})
 				in
 				    ChangedType
+

@@ -12,6 +12,7 @@ table Dim_Macro_Stress
 		lineageTag: f4728d11-e1ef-40bc-9e11-137bfa0057aa
 		summarizeBy: average
 		sourceColumn: GDP_Growth_Pct
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Inflation_HICP_Pct
@@ -19,6 +20,7 @@ table Dim_Macro_Stress
 		lineageTag: 48937bca-9efa-4e90-8e10-dbcfb1806a09
 		summarizeBy: average
 		sourceColumn: Inflation_HICP_Pct
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Central_Bank_Rate_Pct
@@ -26,6 +28,7 @@ table Dim_Macro_Stress
 		lineageTag: a1847cbb-18ef-4cfa-93e1-87bbca0038aa
 		summarizeBy: average
 		sourceColumn: Central_Bank_Rate_Pct
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Unemployment_Pct
@@ -33,6 +36,7 @@ table Dim_Macro_Stress
 		lineageTag: b3847acc-28fa-4efa-84e1-27ee810029aa
 		summarizeBy: average
 		sourceColumn: Unemployment_Pct
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column ECL_Stress_Multiplier
@@ -40,6 +44,7 @@ table Dim_Macro_Stress
 		lineageTag: c4847add-38fa-4ffa-75e1-38ff910018aa
 		summarizeBy: average
 		sourceColumn: ECL_Stress_Multiplier
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition Dim_Macro_Stress-Partition = m
@@ -51,3 +56,4 @@ table Dim_Macro_Stress
 				    ChangedType = Table.TransformColumnTypes(PromotedHeaders,{{"Scenario", type text}, {"GDP_Growth_Pct", type number}, {"Inflation_HICP_Pct", type number}, {"Central_Bank_Rate_Pct", type number}, {"Unemployment_Pct", type number}, {"ECL_Stress_Multiplier", type number}})
 				in
 				    ChangedType
+

@@ -26,7 +26,8 @@
                   "Property": "Hourly_Velocity_Count"
                 }
               },
-              "queryRef": "Fact_Transactions_Stream.Hourly_Velocity_Count"
+              "queryRef": "Fact_Transactions_Stream.Hourly_Velocity_Count",
+              "active": true
             }
           ]
         },

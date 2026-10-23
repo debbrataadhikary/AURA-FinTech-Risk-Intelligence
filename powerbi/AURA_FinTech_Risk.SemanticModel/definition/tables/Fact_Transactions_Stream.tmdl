@@ -24,6 +24,7 @@ table Fact_Transactions_Stream
 		lineageTag: db341851-38e9-41fa-8fbc-61327173e1c2
 		summarizeBy: sum
 		sourceColumn: Amount_EUR
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Is_Foreign_Counterparty
@@ -66,3 +67,4 @@ table Fact_Transactions_Stream
 				    ChangedType = Table.TransformColumnTypes(PromotedHeaders,{{"Transaction_ID", type text}, {"Customer_ID", type text}, {"Channel", type text}, {"Amount_EUR", type number}, {"Is_Foreign_Counterparty", Int64.Type}, {"Is_High_Risk_Jurisdiction", Int64.Type}, {"Hourly_Velocity_Count", Int64.Type}, {"AML_Suspicious_Flag", Int64.Type}, {"Timestamp", type datetime}})
 				in
 				    ChangedType
+

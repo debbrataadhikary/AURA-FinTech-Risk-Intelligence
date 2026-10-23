@@ -31,3 +31,7 @@ target/
 dbt_packages/
 logs/
 .user.yml
+
+# Power BI local cache and user settings
+*.abf
+**/localSettings.json

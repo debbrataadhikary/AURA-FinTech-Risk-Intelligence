@@ -26,7 +26,8 @@
                   "Property": "Days_Past_Due_DPD"
                 }
               },
-              "queryRef": "Fact_Credit_Portfolio.Days_Past_Due_DPD"
+              "queryRef": "Fact_Credit_Portfolio.Days_Past_Due_DPD",
+              "active": true
             }
           ]
         },

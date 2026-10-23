@@ -26,7 +26,8 @@
                   "Property": "IFRS9_Stage"
                 }
               },
-              "queryRef": "Fact_Credit_Portfolio.IFRS9_Stage"
+              "queryRef": "Fact_Credit_Portfolio.IFRS9_Stage",
+              "active": true
             }
           ]
         },

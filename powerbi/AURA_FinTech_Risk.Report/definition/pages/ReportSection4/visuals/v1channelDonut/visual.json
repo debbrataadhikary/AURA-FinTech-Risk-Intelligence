@@ -26,7 +26,8 @@
                   "Property": "Channel"
                 }
               },
-              "queryRef": "Fact_Transactions_Stream.Channel"
+              "queryRef": "Fact_Transactions_Stream.Channel",
+              "active": true
             }
           ]
         },
