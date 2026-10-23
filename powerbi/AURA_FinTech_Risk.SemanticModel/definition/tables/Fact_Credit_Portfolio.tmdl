@@ -4,146 +4,130 @@ table Fact_Credit_Portfolio
 	column Loan_ID
 		dataType: string
 		lineageTag: 0ed84613-e10c-41eb-b380-b06faf73996f
+		summarizeBy: none
 		sourceColumn: Loan_ID
 
 	column Customer_ID
 		dataType: string
 		lineageTag: acf62202-59b0-491b-ade4-3b8a3b92c1ad
+		summarizeBy: none
 		sourceColumn: Customer_ID
 
 	column Age
-		dataType: string
+		dataType: int64
 		lineageTag: 5e931219-2f80-4b10-bc7f-8bba7c030119
-		summarizeBy: none
+		summarizeBy: average
 		sourceColumn: Age
 
-		annotation SummarizationSetBy = Automatic
-
 	column Annual_Income_EUR
-		dataType: string
+		dataType: double
 		lineageTag: 5b816731-d746-4480-b3d8-382a04558034
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: Annual_Income_EUR
-
-		annotation SummarizationSetBy = Automatic
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column FICO_Score
-		dataType: string
+		dataType: int64
 		lineageTag: 65435e45-e2fc-4507-a14a-6646637a193e
-		summarizeBy: none
+		summarizeBy: average
 		sourceColumn: FICO_Score
 
-		annotation SummarizationSetBy = Automatic
-
 	column Debt_to_Income_DTI
-		dataType: string
+		dataType: double
 		lineageTag: f910d6ce-829c-46bf-b2d7-a7eafcb9fa57
-		summarizeBy: none
+		summarizeBy: average
 		sourceColumn: Debt_to_Income_DTI
-
-		annotation SummarizationSetBy = Automatic
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Employment_Length_Years
-		dataType: string
+		dataType: int64
 		lineageTag: 13af849d-2190-4069-b36a-9f226262e178
-		summarizeBy: none
+		summarizeBy: average
 		sourceColumn: Employment_Length_Years
 
-		annotation SummarizationSetBy = Automatic
-
 	column Loan_Amount_EUR
-		dataType: string
+		dataType: double
 		lineageTag: 15dc3ccc-0407-4686-888a-a21290e037ab
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: Loan_Amount_EUR
-
-		annotation SummarizationSetBy = Automatic
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Loan_Purpose
 		dataType: string
-		lineageTag: 5882d0fa-ee1e-4814-bae7-b3afe218676a
+		lineageTag: 8852e690-32df-4c28-97c7-0eeadbbcf03c
+		summarizeBy: none
 		sourceColumn: Loan_Purpose
 
 	column Term_Months
-		dataType: string
-		lineageTag: fbfab450-68a3-4ca2-a3c9-426e5c532eb0
-		summarizeBy: none
+		dataType: int64
+		lineageTag: 66a3aa8f-2877-43f1-b851-ca6cfa50c4ad
+		summarizeBy: average
 		sourceColumn: Term_Months
 
-		annotation SummarizationSetBy = Automatic
-
 	column Interest_Rate_Pct
-		dataType: string
-		lineageTag: 95ffc041-6f8c-4820-aaba-2c51f18e7136
-		summarizeBy: none
+		dataType: double
+		lineageTag: f4c3f59e-14f7-41a4-9ecb-e7b398dfaa04
+		summarizeBy: average
 		sourceColumn: Interest_Rate_Pct
-
-		annotation SummarizationSetBy = Automatic
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Days_Past_Due_DPD
-		dataType: string
-		lineageTag: 1dc1082c-be90-4dc2-b79b-a4127e330837
-		summarizeBy: none
+		dataType: int64
+		lineageTag: ad071279-d10d-45f8-a006-21820684cf05
+		summarizeBy: sum
 		sourceColumn: Days_Past_Due_DPD
-
-		annotation SummarizationSetBy = Automatic
 
 	column IFRS9_Stage
 		dataType: string
-		lineageTag: 79be4dcc-56c9-4b6e-9380-b79e6db9df23
+		lineageTag: b699f485-6126-444a-953e-32b509bc050e
+		summarizeBy: none
 		sourceColumn: IFRS9_Stage
 
 	column EAD_Exposure_EUR
-		dataType: string
-		lineageTag: 6f021603-deec-40ae-90fd-1a6196f63ade
-		summarizeBy: none
+		dataType: double
+		lineageTag: 8eb512c0-7cf1-4ec4-9df2-5ec24b330364
+		summarizeBy: sum
 		sourceColumn: EAD_Exposure_EUR
-
-		annotation SummarizationSetBy = Automatic
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column LGD_Loss_Given_Default
-		dataType: string
-		lineageTag: d4594f49-8ac8-4a33-8f8f-e2b6a8391159
-		summarizeBy: none
+		dataType: double
+		lineageTag: a0391d4e-b73a-4ef3-be5b-86ba6bf4f620
+		summarizeBy: average
 		sourceColumn: LGD_Loss_Given_Default
-
-		annotation SummarizationSetBy = Automatic
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column PD_Probability_of_Default
-		dataType: string
-		lineageTag: 5a92eac5-a6f1-4dbe-8a2b-094bec069a99
-		summarizeBy: none
+		dataType: double
+		lineageTag: 489437ff-99d9-4fa2-bcda-3adfb3763f35
+		summarizeBy: average
 		sourceColumn: PD_Probability_of_Default
-
-		annotation SummarizationSetBy = Automatic
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column ECL_Expected_Loss_EUR
-		dataType: string
+		dataType: double
 		lineageTag: 1c55d3e1-3193-499a-8b5e-49a840d09d82
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: ECL_Expected_Loss_EUR
-
-		annotation SummarizationSetBy = Automatic
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Default_12M_Target
-		dataType: string
+		dataType: int64
 		lineageTag: 29f19652-f44e-46db-8621-d36b21e15e99
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: Default_12M_Target
 
-		annotation SummarizationSetBy = Automatic
-
 	column Origination_Date
-		dataType: string
+		dataType: dateTime
+		formatString: General Date
 		lineageTag: f035bc25-3446-4a33-9b51-922706e5a80b
 		summarizeBy: none
 		sourceColumn: Origination_Date
 
-		annotation SummarizationSetBy = Automatic
-
 	column Country
 		dataType: string
 		lineageTag: de4570e3-a06f-4940-8232-e6a220528406
+		summarizeBy: none
 		sourceColumn: Country
 
 	partition Fact_Credit_Portfolio-Partition = m
@@ -151,7 +135,7 @@ table Fact_Credit_Portfolio
 		source =
 				let
 				    Source = Csv.Document(File.Contents("d:\\DW- Internship\\AURA-FinTech-Risk-Intelligence\\data\\fact_credit_portfolio.csv"),[Delimiter=",", Columns=20, Encoding=65001, QuoteStyle=QuoteStyle.None]),
-				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+				    PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    ChangedType = Table.TransformColumnTypes(PromotedHeaders,{{"Loan_ID", type text}, {"Customer_ID", type text}, {"Age", Int64.Type}, {"Annual_Income_EUR", type number}, {"FICO_Score", Int64.Type}, {"Debt_to_Income_DTI", type number}, {"Employment_Length_Years", Int64.Type}, {"Loan_Amount_EUR", type number}, {"Loan_Purpose", type text}, {"Term_Months", Int64.Type}, {"Interest_Rate_Pct", type number}, {"Days_Past_Due_DPD", Int64.Type}, {"IFRS9_Stage", type text}, {"EAD_Exposure_EUR", type number}, {"LGD_Loss_Given_Default", type number}, {"PD_Probability_of_Default", type number}, {"ECL_Expected_Loss_EUR", type number}, {"Default_12M_Target", Int64.Type}, {"Origination_Date", type datetime}, {"Country", type text}})
 				in
-				    #"Promoted Headers"
-
+				    ChangedType

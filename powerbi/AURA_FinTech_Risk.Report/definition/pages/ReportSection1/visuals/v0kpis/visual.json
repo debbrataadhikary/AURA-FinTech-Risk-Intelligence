@@ -79,17 +79,17 @@
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "Fact_Transactions_Stream"
+                          "Entity": "Fact_Credit_Portfolio"
                         }
                       },
-                      "Property": "AML_Suspicious_Flag"
+                      "Property": "Default_12M_Target"
                     }
                   },
                   "Function": 0
                 }
               },
-              "queryRef": "Sum(Fact_Transactions_Stream.AML_Suspicious_Flag)",
-              "nativeQueryRef": "AML_Suspicious_Events"
+              "queryRef": "Sum(Fact_Credit_Portfolio.Default_12M_Target)",
+              "nativeQueryRef": "Default_Accounts_12M"
             }
           ]
         }
@@ -171,7 +171,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'PORTFOLIO SOLVENCY & CAPITAL METRICS (EAD \u2022 IFRS 9 ECL \u2022 AML ALERTS)'"
+                  "Value": "'PORTFOLIO SOLVENCY & CAPITAL METRICS (EAD \u2022 IFRS 9 ECL \u2022 TOTAL VOLUME \u2022 DEFAULTS)'"
                 }
               }
             },

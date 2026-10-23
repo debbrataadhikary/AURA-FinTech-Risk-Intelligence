@@ -1,75 +1,68 @@
 table Fact_Transactions_Stream
-	lineageTag: 05816202-9474-4c5e-ab6d-11f898c84f91
+	lineageTag: c219de19-21df-41ef-bf74-27ee389e87af
 
 	column Transaction_ID
 		dataType: string
-		lineageTag: 2b90eddc-7de4-4cef-a55a-755ce2edb0ee
+		lineageTag: 247183e8-8a9d-4c3e-812d-0b73138b5551
+		summarizeBy: none
 		sourceColumn: Transaction_ID
 
 	column Customer_ID
 		dataType: string
-		lineageTag: 75660234-e7be-4204-8508-1a657daad6cd
+		lineageTag: a3f3e1a0-6c9f-4318-9ef4-c154316715f2
+		summarizeBy: none
 		sourceColumn: Customer_ID
 
 	column Channel
 		dataType: string
-		lineageTag: 1c1372a5-61fe-412a-bb10-58ef7b8aaca2
+		lineageTag: e4857418-5a2a-4420-bfef-c7db11b421a1
+		summarizeBy: none
 		sourceColumn: Channel
 
 	column Amount_EUR
-		dataType: string
-		lineageTag: bf5667f6-4bd9-49a6-81ff-f9d1a07448ce
-		summarizeBy: none
+		dataType: double
+		lineageTag: db341851-38e9-41fa-8fbc-61327173e1c2
+		summarizeBy: sum
 		sourceColumn: Amount_EUR
-
-		annotation SummarizationSetBy = Automatic
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Is_Foreign_Counterparty
-		dataType: string
-		lineageTag: 718bf488-a435-49fd-a54b-ba690d7c8c40
-		summarizeBy: none
+		dataType: int64
+		lineageTag: e983058a-36ee-4890-84a1-8d07e600579e
+		summarizeBy: sum
 		sourceColumn: Is_Foreign_Counterparty
 
-		annotation SummarizationSetBy = Automatic
-
 	column Is_High_Risk_Jurisdiction
-		dataType: string
-		lineageTag: 17c6daae-23c2-446f-b6a9-4fc70d9c27e9
-		summarizeBy: none
+		dataType: int64
+		lineageTag: 3ea416d8-80f2-45e0-99e1-e630d7aa5267
+		summarizeBy: sum
 		sourceColumn: Is_High_Risk_Jurisdiction
 
-		annotation SummarizationSetBy = Automatic
-
 	column Hourly_Velocity_Count
-		dataType: string
-		lineageTag: afd990a7-3729-47ad-a70c-75ffd57545ef
-		summarizeBy: none
+		dataType: int64
+		lineageTag: 3676c666-4c4f-40e8-8687-73ee9707e38a
+		summarizeBy: sum
 		sourceColumn: Hourly_Velocity_Count
 
-		annotation SummarizationSetBy = Automatic
-
 	column AML_Suspicious_Flag
-		dataType: string
-		lineageTag: 9ec0e01b-f64f-42e2-986e-833bd78fd6b0
-		summarizeBy: none
+		dataType: int64
+		lineageTag: e9aa123b-55cf-4df5-bd84-c89bdfd257a0
+		summarizeBy: sum
 		sourceColumn: AML_Suspicious_Flag
 
-		annotation SummarizationSetBy = Automatic
-
 	column Timestamp
-		dataType: string
-		lineageTag: 98136851-6dfc-47e3-ab00-49911f3c3e72
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 18ee8755-9ee8-4ec2-9e80-d6e2776c9ef5
 		summarizeBy: none
 		sourceColumn: Timestamp
-
-		annotation SummarizationSetBy = Automatic
 
 	partition Fact_Transactions_Stream-Partition = m
 		mode: import
 		source =
 				let
 				    Source = Csv.Document(File.Contents("d:\\DW- Internship\\AURA-FinTech-Risk-Intelligence\\data\\fact_transactions_stream.csv"),[Delimiter=",", Columns=9, Encoding=65001, QuoteStyle=QuoteStyle.None]),
-				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+				    PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    ChangedType = Table.TransformColumnTypes(PromotedHeaders,{{"Transaction_ID", type text}, {"Customer_ID", type text}, {"Channel", type text}, {"Amount_EUR", type number}, {"Is_Foreign_Counterparty", Int64.Type}, {"Is_High_Risk_Jurisdiction", Int64.Type}, {"Hourly_Velocity_Count", Int64.Type}, {"AML_Suspicious_Flag", Int64.Type}, {"Timestamp", type datetime}})
 				in
-				    #"Promoted Headers"
-
+				    ChangedType
