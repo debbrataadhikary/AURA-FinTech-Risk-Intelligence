@@ -47,6 +47,12 @@ The platform bridges quantitative credit risk modeling, regulatory capital compl
 
 ## 3. High-Level Architecture & Medallion Pipeline
 
+The platform leverages a **dbt Medallion Architecture (DuckDB)** transforming raw data from Bronze ingestion into Silver feature stores and Gold analytical reporting marts:
+
+<p align="center">
+  <img src="assets/dbt_project_lineage.png" alt="AURA FinTech dbt Medallion Lineage Graph" width="100%" />
+</p>
+
 ```mermaid
 flowchart TD
     subgraph Ingestion["1. Multi-Stream Ingestion"]
@@ -201,6 +207,7 @@ DIVIDE(DepletedTier1, StressedRWA, 0)
 AURA-FinTech-Risk-Intelligence/
 ├── assets/
 │   ├── powerbi_executive_boardroom_cockpit.png  # Ultra-HD Boardroom preview
+│   ├── dbt_project_lineage.png                  # dbt Medallion DAG lineage graph
 │   ├── model_roc_curve.png                      # Validation ROC Curve (AUC 0.8142)
 │   └── ifrs9_ecl_stage_breakdown.png            # Staging allocation charts
 ├── data/
@@ -248,6 +255,7 @@ AURA-FinTech-Risk-Intelligence/
 │   ├── credit_default_gb_model.joblib           # Gradient Boosting Classifier (ROC-AUC 0.8142)
 │   └── aml_isolation_forest.joblib              # Unsupervised Isolation Forest Anomaly Model
 ├── generate_fintech_dataset.py                  # Synthetic data generator engine
+├── generate_dbt_lineage_graph.py                # dbt Medallion DAG lineage graph generator
 ├── train_risk_models.py                         # ML training, validation, and chart generation
 ├── requirements.txt                             # Python dependencies (dbt, duckdb, sklearn)
 ├── .gitignore                                   # Standard repo ignore rules
