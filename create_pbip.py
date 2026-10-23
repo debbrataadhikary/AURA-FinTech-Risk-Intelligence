@@ -7,22 +7,19 @@ sem_dir = os.path.join(base, "AURA_FinTech_Risk.SemanticModel")
 os.makedirs(rep_dir, exist_ok=True)
 os.makedirs(sem_dir, exist_ok=True)
 
-# 1. pbip root
+# 1. pbip root (standard strict schema without extra settings)
 pbip = {
     "version": "1.0",
     "artifacts": [
         {"report": {"path": "AURA_FinTech_Risk.Report"}}
-    ],
-    "settings": {
-        "enableAutoAuth": True
-    }
+    ]
 }
 with open(os.path.join(base, "AURA_FinTech_Risk.pbip"), "w", encoding="utf-8") as f:
     json.dump(pbip, f, indent=2)
 
 # 2. definition.pbir
 pbir = {
-    "version": "4.0",
+    "version": "1.0",
     "datasetReference": {
         "byPath": {"path": "../AURA_FinTech_Risk.SemanticModel"},
         "byConnection": None
@@ -38,10 +35,98 @@ pbism = {
 with open(os.path.join(sem_dir, "definition.pbism"), "w", encoding="utf-8") as f:
     json.dump(pbism, f, indent=2)
 
-# 4. model.bim
+# 4. report.json
+report_json = {
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.0.0/schema.json",
+    "config": "{\"name\":\"AURA_FinTech_Risk_Report\",\"layouts\":[{\"id\":0,\"name\":\"Landscape\",\"reportWidth\":1280,\"reportHeight\":720}],\"activeSectionIndex\":0}",
+    "layoutOptimization": 0,
+    "resourcePackages": [],
+    "sections": [
+        {
+            "name": "ReportSection_Boardroom",
+            "displayName": "Executive Boardroom Cockpit",
+            "displayOption": 1,
+            "config": "{}",
+            "visualContainers": [],
+            "filters": []
+        },
+        {
+            "name": "ReportSection_IFRS9",
+            "displayName": "IFRS 9 Staging & ECL",
+            "displayOption": 1,
+            "config": "{}",
+            "visualContainers": [],
+            "filters": []
+        },
+        {
+            "name": "ReportSection_Stress",
+            "displayName": "Macro Stress Testing",
+            "displayOption": 1,
+            "config": "{}",
+            "visualContainers": [],
+            "filters": []
+        },
+        {
+            "name": "ReportSection_AML",
+            "displayName": "AML Surveillance Matrix",
+            "displayOption": 1,
+            "config": "{}",
+            "visualContainers": [],
+            "filters": []
+        }
+    ]
+}
+with open(os.path.join(rep_dir, "report.json"), "w", encoding="utf-8") as f:
+    json.dump(report_json, f, indent=2)
+
+# 5. model.bim with exact column names and types matching CSVs
 csv_credit = r"d:\DW- Internship\AURA-FinTech-Risk-Intelligence\data\fact_credit_portfolio.csv".replace("\\", "\\\\")
 csv_txn = r"d:\DW- Internship\AURA-FinTech-Risk-Intelligence\data\fact_transactions_stream.csv".replace("\\", "\\\\")
 csv_macro = r"d:\DW- Internship\AURA-FinTech-Risk-Intelligence\data\dim_macro_stress_scenarios.csv".replace("\\", "\\\\")
+
+credit_cols = [
+    ("Loan_ID", "string"),
+    ("Customer_ID", "string"),
+    ("Age", "int64"),
+    ("Annual_Income_EUR", "double"),
+    ("FICO_Score", "int64"),
+    ("Debt_to_Income_DTI", "double"),
+    ("Employment_Length_Years", "int64"),
+    ("Loan_Amount_EUR", "double"),
+    ("Loan_Purpose", "string"),
+    ("Term_Months", "int64"),
+    ("Interest_Rate_Pct", "double"),
+    ("Days_Past_Due_DPD", "int64"),
+    ("IFRS9_Stage", "string"),
+    ("EAD_Exposure_EUR", "double"),
+    ("LGD_Loss_Given_Default", "double"),
+    ("PD_Probability_of_Default", "double"),
+    ("ECL_Expected_Loss_EUR", "double"),
+    ("Default_12M_Target", "int64"),
+    ("Origination_Date", "dateTime"),
+    ("Country", "string")
+]
+
+txn_cols = [
+    ("Transaction_ID", "string"),
+    ("Customer_ID", "string"),
+    ("Channel", "string"),
+    ("Amount_EUR", "double"),
+    ("Is_Foreign_Counterparty", "int64"),
+    ("Is_High_Risk_Jurisdiction", "int64"),
+    ("Hourly_Velocity_Count", "int64"),
+    ("AML_Suspicious_Flag", "int64"),
+    ("Timestamp", "dateTime")
+]
+
+macro_cols = [
+    ("Scenario", "string"),
+    ("GDP_Growth_Pct", "double"),
+    ("Inflation_HICP_Pct", "double"),
+    ("Central_Bank_Rate_Pct", "double"),
+    ("Unemployment_Pct", "double"),
+    ("ECL_Stress_Multiplier", "double")
+]
 
 bim = {
     "name": "AURA_FinTech_SemanticModel",
@@ -57,23 +142,7 @@ bim = {
         "tables": [
             {
                 "name": "Fact_Credit_Portfolio",
-                "columns": [
-                    {"name": "loan_id", "dataType": "string", "sourceColumn": "loan_id"},
-                    {"name": "customer_id", "dataType": "string", "sourceColumn": "customer_id"},
-                    {"name": "credit_score", "dataType": "int64", "sourceColumn": "credit_score"},
-                    {"name": "debt_to_income", "dataType": "double", "sourceColumn": "debt_to_income"},
-                    {"name": "annual_income", "dataType": "double", "sourceColumn": "annual_income"},
-                    {"name": "revolving_utilization", "dataType": "double", "sourceColumn": "revolving_utilization"},
-                    {"name": "delinquency_history", "dataType": "int64", "sourceColumn": "delinquency_history"},
-                    {"name": "loan_tenor_months", "dataType": "int64", "sourceColumn": "loan_tenor_months"},
-                    {"name": "ead_exposure", "dataType": "double", "sourceColumn": "ead_exposure"},
-                    {"name": "lgd_percentage", "dataType": "double", "sourceColumn": "lgd_percentage"},
-                    {"name": "pd_calibrated", "dataType": "double", "sourceColumn": "pd_calibrated"},
-                    {"name": "ifrs9_stage", "dataType": "string", "sourceColumn": "ifrs9_stage"},
-                    {"name": "ifrs9_ecl_amount", "dataType": "double", "sourceColumn": "ifrs9_ecl_amount"},
-                    {"name": "risk_weight", "dataType": "double", "sourceColumn": "risk_weight"},
-                    {"name": "default_target_12m", "dataType": "int64", "sourceColumn": "default_target_12m"}
-                ],
+                "columns": [{"name": col, "dataType": dtype, "sourceColumn": col} for col, dtype in credit_cols],
                 "partitions": [
                     {
                         "name": "Fact_Credit_Portfolio-Partition",
@@ -82,7 +151,7 @@ bim = {
                             "type": "m",
                             "expression": [
                                 "let",
-                                f"    Source = Csv.Document(File.Contents(\"{csv_credit}\"),[Delimiter=\",\", Columns=15, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                                f"    Source = Csv.Document(File.Contents(\"{csv_credit}\"),[Delimiter=\",\", Columns=20, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
                                 "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])",
                                 "in",
                                 "    #\"Promoted Headers\""
@@ -93,17 +162,7 @@ bim = {
             },
             {
                 "name": "Fact_Transactions_Stream",
-                "columns": [
-                    {"name": "txn_id", "dataType": "string", "sourceColumn": "txn_id"},
-                    {"name": "customer_id", "dataType": "string", "sourceColumn": "customer_id"},
-                    {"name": "txn_amount", "dataType": "double", "sourceColumn": "txn_amount"},
-                    {"name": "txn_channel", "dataType": "string", "sourceColumn": "txn_channel"},
-                    {"name": "is_foreign_counterparty", "dataType": "int64", "sourceColumn": "is_foreign_counterparty"},
-                    {"name": "is_high_risk_jurisdiction", "dataType": "int64", "sourceColumn": "is_high_risk_jurisdiction"},
-                    {"name": "hourly_velocity_count", "dataType": "int64", "sourceColumn": "hourly_velocity_count"},
-                    {"name": "structuring_flag", "dataType": "int64", "sourceColumn": "structuring_flag"},
-                    {"name": "is_aml_flagged", "dataType": "int64", "sourceColumn": "is_aml_flagged"}
-                ],
+                "columns": [{"name": col, "dataType": dtype, "sourceColumn": col} for col, dtype in txn_cols],
                 "partitions": [
                     {
                         "name": "Fact_Transactions_Stream-Partition",
@@ -123,14 +182,7 @@ bim = {
             },
             {
                 "name": "Dim_Macro_Stress",
-                "columns": [
-                    {"name": "scenario_name", "dataType": "string", "sourceColumn": "scenario_name"},
-                    {"name": "gdp_shock_pct", "dataType": "double", "sourceColumn": "gdp_shock_pct"},
-                    {"name": "inflation_rate_pct", "dataType": "double", "sourceColumn": "inflation_rate_pct"},
-                    {"name": "central_bank_rate_pct", "dataType": "double", "sourceColumn": "central_bank_rate_pct"},
-                    {"name": "unemployment_rate_pct", "dataType": "double", "sourceColumn": "unemployment_rate_pct"},
-                    {"name": "ecl_stress_multiplier", "dataType": "double", "sourceColumn": "ecl_stress_multiplier"}
-                ],
+                "columns": [{"name": col, "dataType": dtype, "sourceColumn": col} for col, dtype in macro_cols],
                 "partitions": [
                     {
                         "name": "Dim_Macro_Stress-Partition",
@@ -151,7 +203,8 @@ bim = {
         ]
     }
 }
+
 with open(os.path.join(sem_dir, "model.bim"), "w", encoding="utf-8") as f:
     json.dump(bim, f, indent=2)
 
-print("PBIP successfully generated at:", os.path.join(base, "AURA_FinTech_Risk.pbip"))
+print("model.bim and PBIP successfully updated and synced!")

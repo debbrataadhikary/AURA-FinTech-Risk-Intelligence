@@ -14,79 +14,104 @@
         "name": "Fact_Credit_Portfolio",
         "columns": [
           {
-            "name": "loan_id",
+            "name": "Loan_ID",
             "dataType": "string",
-            "sourceColumn": "loan_id"
+            "sourceColumn": "Loan_ID"
           },
           {
-            "name": "customer_id",
+            "name": "Customer_ID",
             "dataType": "string",
-            "sourceColumn": "customer_id"
+            "sourceColumn": "Customer_ID"
           },
           {
-            "name": "credit_score",
+            "name": "Age",
             "dataType": "int64",
-            "sourceColumn": "credit_score"
+            "sourceColumn": "Age"
           },
           {
-            "name": "debt_to_income",
+            "name": "Annual_Income_EUR",
             "dataType": "double",
-            "sourceColumn": "debt_to_income"
+            "sourceColumn": "Annual_Income_EUR"
           },
           {
-            "name": "annual_income",
-            "dataType": "double",
-            "sourceColumn": "annual_income"
-          },
-          {
-            "name": "revolving_utilization",
-            "dataType": "double",
-            "sourceColumn": "revolving_utilization"
-          },
-          {
-            "name": "delinquency_history",
+            "name": "FICO_Score",
             "dataType": "int64",
-            "sourceColumn": "delinquency_history"
+            "sourceColumn": "FICO_Score"
           },
           {
-            "name": "loan_tenor_months",
+            "name": "Debt_to_Income_DTI",
+            "dataType": "double",
+            "sourceColumn": "Debt_to_Income_DTI"
+          },
+          {
+            "name": "Employment_Length_Years",
             "dataType": "int64",
-            "sourceColumn": "loan_tenor_months"
+            "sourceColumn": "Employment_Length_Years"
           },
           {
-            "name": "ead_exposure",
+            "name": "Loan_Amount_EUR",
             "dataType": "double",
-            "sourceColumn": "ead_exposure"
+            "sourceColumn": "Loan_Amount_EUR"
           },
           {
-            "name": "lgd_percentage",
-            "dataType": "double",
-            "sourceColumn": "lgd_percentage"
-          },
-          {
-            "name": "pd_calibrated",
-            "dataType": "double",
-            "sourceColumn": "pd_calibrated"
-          },
-          {
-            "name": "ifrs9_stage",
+            "name": "Loan_Purpose",
             "dataType": "string",
-            "sourceColumn": "ifrs9_stage"
+            "sourceColumn": "Loan_Purpose"
           },
           {
-            "name": "ifrs9_ecl_amount",
-            "dataType": "double",
-            "sourceColumn": "ifrs9_ecl_amount"
-          },
-          {
-            "name": "risk_weight",
-            "dataType": "double",
-            "sourceColumn": "risk_weight"
-          },
-          {
-            "name": "default_target_12m",
+            "name": "Term_Months",
             "dataType": "int64",
-            "sourceColumn": "default_target_12m"
+            "sourceColumn": "Term_Months"
+          },
+          {
+            "name": "Interest_Rate_Pct",
+            "dataType": "double",
+            "sourceColumn": "Interest_Rate_Pct"
+          },
+          {
+            "name": "Days_Past_Due_DPD",
+            "dataType": "int64",
+            "sourceColumn": "Days_Past_Due_DPD"
+          },
+          {
+            "name": "IFRS9_Stage",
+            "dataType": "string",
+            "sourceColumn": "IFRS9_Stage"
+          },
+          {
+            "name": "EAD_Exposure_EUR",
+            "dataType": "double",
+            "sourceColumn": "EAD_Exposure_EUR"
+          },
+          {
+            "name": "LGD_Loss_Given_Default",
+            "dataType": "double",
+            "sourceColumn": "LGD_Loss_Given_Default"
+          },
+          {
+            "name": "PD_Probability_of_Default",
+            "dataType": "double",
+            "sourceColumn": "PD_Probability_of_Default"
+          },
+          {
+            "name": "ECL_Expected_Loss_EUR",
+            "dataType": "double",
+            "sourceColumn": "ECL_Expected_Loss_EUR"
+          },
+          {
+            "name": "Default_12M_Target",
+            "dataType": "int64",
+            "sourceColumn": "Default_12M_Target"
+          },
+          {
+            "name": "Origination_Date",
+            "dataType": "dateTime",
+            "sourceColumn": "Origination_Date"
+          },
+          {
+            "name": "Country",
+            "dataType": "string",
+            "sourceColumn": "Country"
           }
         ],
         "partitions": [
@@ -97,7 +122,7 @@
               "type": "m",
               "expression": [
                 "let",
-                "    Source = Csv.Document(File.Contents(\"d:\\\\DW- Internship\\\\AURA-FinTech-Risk-Intelligence\\\\data\\\\fact_credit_portfolio.csv\"),[Delimiter=\",\", Columns=15, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Source = Csv.Document(File.Contents(\"d:\\\\DW- Internship\\\\AURA-FinTech-Risk-Intelligence\\\\data\\\\fact_credit_portfolio.csv\"),[Delimiter=\",\", Columns=20, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
                 "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])",
                 "in",
                 "    #\"Promoted Headers\""
@@ -110,49 +135,49 @@
         "name": "Fact_Transactions_Stream",
         "columns": [
           {
-            "name": "txn_id",
+            "name": "Transaction_ID",
             "dataType": "string",
-            "sourceColumn": "txn_id"
+            "sourceColumn": "Transaction_ID"
           },
           {
-            "name": "customer_id",
+            "name": "Customer_ID",
             "dataType": "string",
-            "sourceColumn": "customer_id"
+            "sourceColumn": "Customer_ID"
           },
           {
-            "name": "txn_amount",
+            "name": "Channel",
+            "dataType": "string",
+            "sourceColumn": "Channel"
+          },
+          {
+            "name": "Amount_EUR",
             "dataType": "double",
-            "sourceColumn": "txn_amount"
+            "sourceColumn": "Amount_EUR"
           },
           {
-            "name": "txn_channel",
-            "dataType": "string",
-            "sourceColumn": "txn_channel"
-          },
-          {
-            "name": "is_foreign_counterparty",
+            "name": "Is_Foreign_Counterparty",
             "dataType": "int64",
-            "sourceColumn": "is_foreign_counterparty"
+            "sourceColumn": "Is_Foreign_Counterparty"
           },
           {
-            "name": "is_high_risk_jurisdiction",
+            "name": "Is_High_Risk_Jurisdiction",
             "dataType": "int64",
-            "sourceColumn": "is_high_risk_jurisdiction"
+            "sourceColumn": "Is_High_Risk_Jurisdiction"
           },
           {
-            "name": "hourly_velocity_count",
+            "name": "Hourly_Velocity_Count",
             "dataType": "int64",
-            "sourceColumn": "hourly_velocity_count"
+            "sourceColumn": "Hourly_Velocity_Count"
           },
           {
-            "name": "structuring_flag",
+            "name": "AML_Suspicious_Flag",
             "dataType": "int64",
-            "sourceColumn": "structuring_flag"
+            "sourceColumn": "AML_Suspicious_Flag"
           },
           {
-            "name": "is_aml_flagged",
-            "dataType": "int64",
-            "sourceColumn": "is_aml_flagged"
+            "name": "Timestamp",
+            "dataType": "dateTime",
+            "sourceColumn": "Timestamp"
           }
         ],
         "partitions": [
@@ -176,34 +201,34 @@
         "name": "Dim_Macro_Stress",
         "columns": [
           {
-            "name": "scenario_name",
+            "name": "Scenario",
             "dataType": "string",
-            "sourceColumn": "scenario_name"
+            "sourceColumn": "Scenario"
           },
           {
-            "name": "gdp_shock_pct",
+            "name": "GDP_Growth_Pct",
             "dataType": "double",
-            "sourceColumn": "gdp_shock_pct"
+            "sourceColumn": "GDP_Growth_Pct"
           },
           {
-            "name": "inflation_rate_pct",
+            "name": "Inflation_HICP_Pct",
             "dataType": "double",
-            "sourceColumn": "inflation_rate_pct"
+            "sourceColumn": "Inflation_HICP_Pct"
           },
           {
-            "name": "central_bank_rate_pct",
+            "name": "Central_Bank_Rate_Pct",
             "dataType": "double",
-            "sourceColumn": "central_bank_rate_pct"
+            "sourceColumn": "Central_Bank_Rate_Pct"
           },
           {
-            "name": "unemployment_rate_pct",
+            "name": "Unemployment_Pct",
             "dataType": "double",
-            "sourceColumn": "unemployment_rate_pct"
+            "sourceColumn": "Unemployment_Pct"
           },
           {
-            "name": "ecl_stress_multiplier",
+            "name": "ECL_Stress_Multiplier",
             "dataType": "double",
-            "sourceColumn": "ecl_stress_multiplier"
+            "sourceColumn": "ECL_Stress_Multiplier"
           }
         ],
         "partitions": [
