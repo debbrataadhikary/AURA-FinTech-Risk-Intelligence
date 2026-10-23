@@ -8,15 +8,75 @@ sources:
         description: "Raw credit portfolio loan records with exposures, credit scores, and delinquency history"
         columns:
           - name: loan_id
+            description: "Primary key for retail and institutional loan facility"
             tests:
               - unique
               - not_null
+          - name: customer_id
+            description: "Unique identifier for borrower"
+            tests:
+              - not_null
+          - name: ead_exposure_eur
+            description: "Exposure at Default in EUR"
+            tests:
+              - not_null
+          - name: pd_probability_of_default
+            description: "Calibrated 12-month Probability of Default"
+            tests:
+              - not_null
+          - name: default_12m_target
+            description: "Binary default event indicator"
+            tests:
+              - not_null
+              - accepted_values:
+                  values: [0, 1]
+          - name: ifrs9_stage
+            description: "Initial credit impairment status"
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['Stage 1 (Performing)', 'Stage 2 (SICR - Underperforming)', 'Stage 3 (Default - Credit Impaired)']
+
       - name: fact_transactions_stream
         description: "Raw transactional payment event stream with AML behavioral indicators"
         columns:
           - name: transaction_id
+            description: "Primary key for payment transaction"
             tests:
               - unique
               - not_null
+          - name: customer_id
+            description: "Borrower / account holder identifier"
+            tests:
+              - not_null
+          - name: amount_eur
+            description: "Gross payment amount in EUR"
+            tests:
+              - not_null
+          - name: channel
+            description: "Payment routing and distribution channel"
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['ATM Withdrawal', 'SWIFT Wire', 'SEPA Instant', 'P2P Mobile', 'POS Card']
+          - name: aml_suspicious_flag
+            description: "Binary forensic rule trigger flag"
+            tests:
+              - not_null
+              - accepted_values:
+                  values: [0, 1]
+
       - name: dim_macro_stress_scenarios
         description: "EBA / Basel III macroeconomic stress testing shock parameters"
+        columns:
+          - name: scenario
+            description: "Macro stress scenario identifier"
+            tests:
+              - unique
+              - not_null
+          - name: gdp_growth_pct
+            tests:
+              - not_null
+          - name: ecl_stress_multiplier
+            tests:
+              - not_null

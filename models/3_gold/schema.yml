@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: fct_ifrs9_ecl_provisions
+    description: "Gold analytical mart: Stage 1 to 3 impairment provisions and portfolio coverage"
+    columns:
+      - name: ifrs9_stage_assigned
+        tests:
+          - unique
+          - not_null
+      - name: total_facilities_count
+        tests:
+          - not_null
+      - name: total_ead_exposure_eur
+        tests:
+          - not_null
+      - name: total_ecl_provision_eur
+        tests:
+          - not_null
+
+  - name: fct_basel_iii_capital_adequacy
+    description: "Gold analytical mart: Pillar 1 regulatory capital adequacy ratio (CAR) and buffer surplus"
+    columns:
+      - name: total_portfolio_ead_eur
+        tests:
+          - not_null
+      - name: total_rwa_eur
+        tests:
+          - not_null
+      - name: capital_adequacy_ratio_car_pct
+        tests:
+          - not_null
+      - name: capital_buffer_surplus_bps
+        tests:
+          - not_null
+
+  - name: fct_macro_stress_testing_impact
+    description: "Gold analytical mart: Stressed Capital Adequacy Ratio (CAR) under EBA macro shocks"
+    columns:
+      - name: scenario_name
+        tests:
+          - unique
+          - not_null
+      - name: stressed_car_ratio_pct
+        tests:
+          - not_null
+      - name: solvency_depletion_bps
+        tests:
+          - not_null
+
+  - name: fct_aml_forensic_watchlist
+    description: "Gold analytical mart: Prioritized AML suspect accounts flagged for regulatory SAR filing"
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: forensic_investigation_priority
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['TIER_1_IMMEDIATE_SAR_FILING', 'TIER_2_ENHANCED_DUE_DILIGENCE', 'TIER_3_ROUTINE_MONITORING']
+
+  - name: fct_portfolio_country_risk
+    description: "Gold analytical mart: Geographic credit concentration across European jurisdictions"
+    columns:
+      - name: sovereign_market
+        tests:
+          - unique
+          - not_null
+      - name: total_ead_eur
+        tests:
+          - not_null
+      - name: npl_ratio_pct
+        tests:
+          - not_null

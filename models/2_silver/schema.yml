@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: int_credit_risk_staging
+    description: "Cleansed and feature-engineered credit portfolio with IFRS 9 SICR triggers and Basel III risk weights"
+    columns:
+      - name: loan_id
+        description: "Primary key for credit facility"
+        tests:
+          - unique
+          - not_null
+      - name: credit_quality_band
+        description: "FICO-driven obligor grade band"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['PRIME', 'NEAR_PRIME', 'SUBPRIME']
+      - name: delinquency_status
+        description: "Delinquency severity status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['CURRENT_PERFORMING', 'EARLY_DELINQUENT_1_30', 'MID_DELINQUENT_31_60', 'SERIOUS_DELINQUENT_61_90', 'DEFAULT_OVER_90']
+      - name: is_sicr_triggered
+        description: "Significant Increase in Credit Risk binary trigger"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+      - name: ifrs9_stage_assigned
+        description: "Regulatory IFRS 9 staging"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Stage 1 (Performing 12M)', 'Stage 2 (Significant Risk Surge)', 'Stage 3 (Credit-Impaired)']
+      - name: rwa_amount_eur
+        description: "Calculated Basel III Risk-Weighted Asset in EUR"
+        tests:
+          - not_null
+      - name: pillar1_capital_required_eur
+        description: "Statutory 8% minimum Pillar 1 capital requirement"
+        tests:
+          - not_null
+      - name: dynamic_ecl_eur
+        description: "Discounted Expected Credit Loss amount"
+        tests:
+          - not_null
+
+  - name: int_aml_behavioral_metrics
+    description: "Behavioral payment metrics, velocity indicators, and structuring indicators"
+    columns:
+      - name: txn_id
+        description: "Unique transaction identifier"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Account holder identifier"
+        tests:
+          - not_null
+      - name: is_structuring_threshold_evasion
+        description: "Structuring / smurfing rule trigger flag"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+      - name: aml_risk_classification
+        description: "Forensic transaction risk category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['CRITICAL_STRUCTURING', 'HIGH_RISK_JURISDICTION_LARGE', 'HIGH_VELOCITY_BURST', 'MEDIUM_CROSS_BORDER', 'LOW_MONITORED']
