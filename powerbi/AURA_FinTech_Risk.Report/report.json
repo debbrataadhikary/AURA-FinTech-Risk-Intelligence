@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.0.0/schema.json",
+  "config": "{\"name\":\"AURA_FinTech_Risk_Report\",\"layouts\":[{\"id\":0,\"name\":\"Landscape\",\"reportWidth\":1280,\"reportHeight\":720}],\"activeSectionIndex\":0}",
+  "layoutOptimization": 0,
+  "resourcePackages": [],
+  "sections": [
+    {
+      "name": "ReportSection_Boardroom",
+      "displayName": "Executive Boardroom Cockpit",
+      "displayOption": 1,
+      "config": "{}",
+      "visualContainers": [],
+      "filters": []
+    },
+    {
+      "name": "ReportSection_IFRS9",
+      "displayName": "IFRS 9 Staging & ECL",
+      "displayOption": 1,
+      "config": "{}",
+      "visualContainers": [],
+      "filters": []
+    },
+    {
+      "name": "ReportSection_Stress",
+      "displayName": "Macro Stress Testing",
+      "displayOption": 1,
+      "config": "{}",
+      "visualContainers": [],
+      "filters": []
+    },
+    {
+      "name": "ReportSection_AML",
+      "displayName": "AML Surveillance Matrix",
+      "displayOption": 1,
+      "config": "{}",
+      "visualContainers": [],
+      "filters": []
+    }
+  ]
+}
